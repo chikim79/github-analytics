@@ -18,7 +18,6 @@ const Login = () => {
         {!tbd &&
             <div style={{ maxWidth: '300px', margin: '0 auto', padding: '1rem', border: '1px solid #ccc', borderRadius: '4px' }}>
                 <h2>Login</h2>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div style={{ marginBottom: '1rem' }}>
                         <label htmlFor="username">Username:</label>
