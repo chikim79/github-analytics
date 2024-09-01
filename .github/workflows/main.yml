@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./frontend
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,15 +22,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./frontend
+        
 
       - name: Build app
         run: npm run build
-        working-directory: ./frontend
+        
 
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@master
-        working-directory: ./frontend
         with:
           args: --acl public-read
         env:
