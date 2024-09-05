@@ -33,6 +33,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.core:jackson-databind:2.16.2")
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	implementation 'commons-io:commons-io:2.16.1'
+	runtimeOnly("com.h2database:h2")
 }
 
 tasks.named('test') {

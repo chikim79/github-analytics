@@ -5,12 +5,19 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.io.File;
+
 @SpringBootApplication
 public class DemoApplication {
 
 	@Bean
 	public ObjectMapper objectMapper() {
 		return new ObjectMapper();
+	}
+
+	@Bean
+	public File testGHFile() {
+		return new File("src/main/resources/test-github.json");
 	}
 
 
