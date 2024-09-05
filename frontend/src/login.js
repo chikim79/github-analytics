@@ -7,14 +7,13 @@ const Login = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (username === 'csca5028' && password === 'password') {
-            setTbd('To be Implemented');
-        } else {
-            setTbd('Invalid credentials');
-        }
+        setTbd(`To be implemented.  Hello ${username}`);
     };
 
     return (<>
+        <h1>CSCA5028 Github Analytics</h1>
+        {!tbd && <p>Enter any username and password</p>}
+        <a href="https://github.com/chikim79/github-analytics/">Source</a>
         {!tbd &&
             <div style={{ maxWidth: '300px', margin: '0 auto', padding: '1rem', border: '1px solid #ccc', borderRadius: '4px' }}>
                 <h2>Login</h2>
