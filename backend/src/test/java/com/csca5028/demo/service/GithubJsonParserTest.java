@@ -10,7 +10,11 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GithubJsonParserTest {
+/**
+ * unit test for csca5028
+ * this test mocks the json file and tests the parser
+ */
+public class GithubJsonParserTest {
 
   private GithubJsonParser githubJsonParser = new GithubJsonParser(new ObjectMapper());
 
