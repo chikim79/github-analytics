@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import java.io.File;
 
 @SpringBootApplication
-public class DemoApplication {
+public class GHAnalyticsApplication {
 
 	@Bean
 	public ObjectMapper objectMapper() {
@@ -23,7 +23,7 @@ public class DemoApplication {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(GHAnalyticsApplication.class, args);
 	}
 
 }
