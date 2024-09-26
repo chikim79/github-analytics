@@ -1,13 +1,7 @@
 import axios from 'axios';
 import {
     S3Client,
-    CreateBucketCommand,
     PutObjectCommand,
-    ListObjectsCommand,
-    CopyObjectCommand,
-    GetObjectCommand,
-    DeleteObjectsCommand,
-    DeleteBucketCommand,
 } from "@aws-sdk/client-s3";
 
 const bucketName = 'gh-analytics-csca5028-build'

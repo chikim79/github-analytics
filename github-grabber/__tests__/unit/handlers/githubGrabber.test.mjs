@@ -1,5 +1,5 @@
 // Import scheduledEventLoggerHandler function from scheduled-event-logger.mjs
-import { scheduledEventLoggerHandler } from '../../../src/handlers/githubGrabber.mjs';
+import { handler } from '../../../src/handlers/githubGrabber.mjs';
 import { jest } from '@jest/globals';
 
 describe('Test for sqs-payload-logger', function () {
@@ -23,7 +23,7 @@ describe('Test for sqs-payload-logger', function () {
       "detail": {}
     }
 
-    await scheduledEventLoggerHandler(payload, null)
+    await handler(payload, null)
 
     // Verify that console.info has been called with the expected payload
     expect(console.info).toHaveBeenCalledWith(JSON.stringify(payload))
@@ -39,7 +39,7 @@ describe('Test for sqs-payload-logger', function () {
       "detail": {}
     }
 
-    await scheduledEventLoggerHandler(payload, null)
+    await handler(payload, null)
 
   });
 });
