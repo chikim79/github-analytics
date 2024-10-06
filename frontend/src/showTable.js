@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 function ShowTable() {
     const [data, setData] = useState([]);
-    const dataUrl = 'http://localhost:8080/repos/all'; // Replace with your actual URL
+    const dataUrl = 'http://git2-env.eba-njzpava2.us-east-1.elasticbeanstalk.com/repos/all'; // Replace with your actual URL
 
     useEffect(() => {
         fetch(dataUrl)

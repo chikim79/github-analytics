@@ -28,7 +28,6 @@ public class GHRepo {
   private String builder;
 
   @Transient
-  @JsonIgnore
   private String filePath;
 
   @Embedded
