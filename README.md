@@ -1,6 +1,7 @@
-# CSCA 5028
+# CSCA 5028 Final Project
 
 ## Background
+
 This Project is intended to analyze public github repositories in Java languagea and provide statistics depending on various metrics.  Github search API provides various metadata about the each repository but does not provide any data on what the java project is made of.  This project is about using the power of Large Language Model to process either the Maven or Gradle build file for each project to understand a little more about each project.  It is meant to be used by data analysts for further processing of the data.
 
 ## Architecture
@@ -22,6 +23,8 @@ The system is made up of following major components.
 ## CI/CD
 
 Each component is deployed using `Github action`.  Each component can be automatically deployed using respective mechanism when code change is pushed to github. (Automatic deployment is commented out currently)
+
+Backend Component also has automated testing for parsing the messages from SQS using JUnit
 
 ## Components
 
