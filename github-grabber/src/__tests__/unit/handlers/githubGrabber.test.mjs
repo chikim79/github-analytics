@@ -1,5 +1,5 @@
 // Import scheduledEventLoggerHandler function from scheduled-event-logger.mjs
-import { handler } from '../../../src/handlers/githubGrabber.mjs';
+import { handler } from '../../../handlers/githubGrabber.mjs';
 import { jest } from '@jest/globals';
 
 describe('Test for sqs-payload-logger', function () {

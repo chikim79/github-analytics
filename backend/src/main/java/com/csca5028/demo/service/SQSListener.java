@@ -30,6 +30,8 @@ public class SQSListener {
   final S3Client s3Client;
   final GHRepoRepository ghRepoRepository;
 
+  private final static String S3_BUCKET = "gh-analytics-csca5028-build";
+
   private final static String prompt =
       """
 Analyze this build file for respond in json format with following attributes: \\"java_version\\", \\"top_dependency\\", \\"maven_or_gradle\\", \\"build_tool_version\\" return only the json file.  do not return anything else. {{build_file}}""";
@@ -38,9 +40,9 @@ Analyze this build file for respond in json format with following attributes: \\
   public void listen(String message) throws IOException, URISyntaxException {
     GHRepo ghRepo = objectMapper.readValue(message, GHRepo.class);
 
-    var s3BuildUri = ghRepo.getBuild_file_s3_loc();
+    var key = ghRepo.getFilePath();
 
-    var buildFileAsString = downloadBuildFile(s3BuildUri);
+    var buildFileAsString = downloadBuildFile(key);
 
     var escapedPrompt = objectMapper.writeValueAsString(buildFileAsString);
     String substring = escapedPrompt.substring(1, escapedPrompt.length() - 1);
@@ -53,14 +55,11 @@ Analyze this build file for respond in json format with following attributes: \\
     ghRepoRepository.save(ghRepo);
   }
 
-  public String downloadBuildFile(String s3BuildUri) throws URISyntaxException, IOException {
+  public String downloadBuildFile(String key) throws URISyntaxException, IOException {
     // Download the build file from S3
 
-    URI uri = new URI(s3BuildUri);
-    String bucketName = uri.getHost();
-    String key = uri.getPath().substring(1);
     GetObjectRequest getObjectRequest = GetObjectRequest.builder()
-            .bucket(bucketName)
+            .bucket(S3_BUCKET)
             .key(key)
             .build();
 

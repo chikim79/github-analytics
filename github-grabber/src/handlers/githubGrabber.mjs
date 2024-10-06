@@ -1,4 +1,4 @@
-import axios from 'axios';
+import https from 'https';
 import {
     S3Client,
     PutObjectCommand,
@@ -11,6 +11,28 @@ const sqsQueueUrl = 'https://sqs.us-east-1.amazonaws.com/096792111890/gh-analyti
 const s3 = new S3Client({ region: 'us-east-1' });
 const sqs = new SQSClient({ region: 'us-east-1' });
 
+
+const fetchFile = (url) => {
+    return new Promise((resolve, reject) => {
+        https.get(url, { headers: { 'User-Agent': 'Node.js' } }, (res) => {
+            let data = '';
+            res.on('data', (chunk) => {
+                data += chunk;
+            });
+            res.on('end', () => {
+                if (res.statusCode === 200) {
+                    resolve(data);
+                } else {
+                    reject(`Request failed. Status code: ${res.statusCode}`);
+                }
+            });
+        }).on('error', (err) => {
+            reject(err.message);
+        });
+    });
+};
+
+
 const uploadBuildFileToS3 = async (repo) => {
     const { id, full_name, html_url, description, forks_count, default_branch, stargazers_count, watchers_count } = repo;
 
@@ -21,25 +43,19 @@ const uploadBuildFileToS3 = async (repo) => {
     let buildFile = null;
     let builder = null;
     try {
-        const response = await axios.get(pomFile);
-        // Check if the response is OK (status 200)
-        if (response.status === 200) {
-            buildFile = response.data;
-            builder = 'maven';
-        }
+        const pomData = await fetchFile(pomFile);
+        buildFile = pomData;
+        builder = 'maven';
     } catch (error) {
-        // Handle the 404 or other errors gracefully
         try {
-            const response = await axios.get(gradleFile);
-            // Check if the response is OK (status 200)
-            if (response.status === 200) {
-                buildFile = response.data;
-                builder = 'gradle';
-            }
+            const gradleData = await fetchFile(gradleFile);
+            buildFile = gradleData;
+            builder = 'gradle';
         } catch (error) {
             return null;
         }
     }
+
 
     const key = `${id}/buildfile`;
 
@@ -63,19 +79,14 @@ const sendToSqs = async (data) => {
 export const handler = async (event, context) => {
     // All log statements are written to CloudWatch by default. For more information, see
     // https://docs.aws.amazon.com/lambda/latest/dg/nodejs-prog-model-logging.html
-    console.info(JSON.stringify(event));
-    const url = 'https://api.github.com/search/repositories';
-    const params = {
-        q: 'language:java',  // Query for Java repositories
-        page: 1,             // Pagination: page number 1
-        per_page: 30         // Return 30 repositories per page
-    };
+    const url = 'https://api.github.com/search/repositories?q=language:java&page=1&per_page=30';
 
     try {
         // Making the GET request to the GitHub API
-        const response = await axios.get(url, { params });
+        const response = await fetchFile(url);
+        const responseData = JSON.parse(response);
 
-        for (const item of response.data.items) {
+        for (const item of responseData.items) {
             const fileData = await uploadBuildFileToS3(item);
             if (fileData) { // fileData can be null, if unable to download builder
 

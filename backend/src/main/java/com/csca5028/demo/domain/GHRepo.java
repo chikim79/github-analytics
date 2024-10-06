@@ -26,7 +26,7 @@ public class GHRepo {
   private String builder;
 
   @Transient
-  private String build_file_s3_loc;
+  private String filePath;
 
   @Embedded
   private LLMResponse llmResponse;
