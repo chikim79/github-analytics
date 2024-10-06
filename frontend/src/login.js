@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import ShowTable from './showTable';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [tbd, setTbd] = useState('');
+    const [showTable, setShowTable] = useState(false);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setTbd(`To be implemented.  Hello ${username}`);
+        setTbd(`Hello ${username}`);
+        setShowTable(true);
     };
 
     return (<>
@@ -47,6 +50,7 @@ const Login = () => {
             </div>}
         <div>
             {tbd}
+            {showTable && <ShowTable />}
         </div>
     </>
     );

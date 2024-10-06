@@ -1,6 +1,8 @@
 package com.csca5028.demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,8 +28,10 @@ public class GHRepo {
   private String builder;
 
   @Transient
+  @JsonIgnore
   private String filePath;
 
   @Embedded
+  @JsonUnwrapped
   private LLMResponse llmResponse;
 }

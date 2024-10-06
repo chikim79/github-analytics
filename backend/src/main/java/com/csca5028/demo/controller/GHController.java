@@ -15,6 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class GHController {
 
   private final File testGHFile;
@@ -40,6 +41,11 @@ public class GHController {
   @GetMapping("/repo/{id}")
   public GHRepo getRepoById(@PathVariable("id") Long id) {
     return ghRepoRepository.findById(id).get();
+  }
+
+  @GetMapping("/repos/all")
+  public Iterable<GHRepo> getAllRepos() {
+    return ghRepoRepository.findAll();
   }
 
 }
