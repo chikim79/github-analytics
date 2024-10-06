@@ -1,4 +1,4 @@
-# CSCA 5028 Final Project
+# Github Analyzer
 
 ## Background
 
@@ -11,6 +11,8 @@ The system is made up of following major components.
 - Github Search API Grabber
 - Backend Processor
 - Frontend
+  
+![image](./aws%20(1)-2.jpg)
 
 ### Other AWS Services
 
@@ -22,7 +24,7 @@ The system is made up of following major components.
 
 ## CI/CD
 
-Each component is deployed using `Github action`.  Each component can be automatically deployed using respective mechanism when code change is pushed to github. (Automatic deployment is commented out currently)
+Each component is deployed using [Github action](https://docs.github.com/en/actions).  Each component can be automatically deployed using respective mechanism when code change is pushed to github. (Automatic deployment is commented out currently)
 
 Backend Component also has automated testing for parsing the messages from SQS using JUnit
 
