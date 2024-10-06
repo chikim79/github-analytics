@@ -3,13 +3,16 @@ import {
     S3Client,
     PutObjectCommand,
 } from "@aws-sdk/client-s3";
+import { SQSClient, SendMessageCommand } from "@aws-sdk/client-sqs";
 
 const bucketName = 'gh-analytics-csca5028-build'
+const sqsQueueUrl = 'https://sqs.us-east-1.amazonaws.com/096792111890/gh-analytics';
 
 const s3 = new S3Client({ region: 'us-east-1' });
+const sqs = new SQSClient({ region: 'us-east-1' });
 
-const processRepo = async (repo) => {
-    const { id, full_name, html_url, description, forks, default_branch } = repo;
+const uploadBuildFileToS3 = async (repo) => {
+    const { id, full_name, html_url, description, forks_count, default_branch, stargazers_count, watchers_count } = repo;
 
     let pomFile = `https://raw.githubusercontent.com/${full_name}/refs/heads/${default_branch}/pom.xml`;
 
@@ -46,7 +49,15 @@ const processRepo = async (repo) => {
         Body: buildFile,
     }));
 
-    return null;
+    return { id, full_name, html_url, description, forks_count, stargazers_count, watchers_count, builder, filePath: key };
+}
+
+const sendToSqs = async (data) => {
+
+    await sqs.send(new SendMessageCommand({
+        QueueUrl: sqsQueueUrl,
+        MessageBody: JSON.stringify(data),
+    }));
 }
 
 export const handler = async (event, context) => {
@@ -65,7 +76,12 @@ export const handler = async (event, context) => {
         const response = await axios.get(url, { params });
 
         for (const item of response.data.items) {
-            const { processed, repoData } = processRepo(item);
+            const fileData = await uploadBuildFileToS3(item);
+            if (fileData) { // fileData can be null, if unable to download builder
+
+                sendToSqs(fileData);
+
+            }
         }
 
     } catch (error) {

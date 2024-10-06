@@ -22,7 +22,6 @@
     },
     "dependencies": {
         "@aws-sdk/client-s3": "^3.658.0",
-        "@aws-sdk/client-sqs": "^3.658.0",
-        "axios": "^1.7.7"
+        "@aws-sdk/client-sqs": "^3.658.0"
     }
 }

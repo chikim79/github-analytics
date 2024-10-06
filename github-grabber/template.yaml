@@ -24,7 +24,8 @@ Resources:
       Runtime: nodejs20.x
       Architectures:
         - x86_64
-      Handler: src/handlers/githubGrabber.handler
+      CodeUri: ./src
+      Handler: handlers/githubGrabber.handler
       # This property associates this Lambda function with a scheduled CloudWatch Event. For all available properties, see
       # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#schedule
       # This example runs every hour.
